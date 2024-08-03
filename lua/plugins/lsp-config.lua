@@ -23,7 +23,9 @@ return {
     lazy = false,
     config = function()
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
+local function source_and_cmd(script, cmd)
+        return { 'bash', '-c', 'source ' .. script .. ' && ' .. table.concat(cmd, ' ') }
+      end
       local lspconfig = require("lspconfig")
       local root_pattern = lspconfig.util.root_pattern
       local util = require("lspconfig.util")
@@ -39,12 +41,25 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
+     
       lspconfig.pyright.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
+                --cmd = source_and_cmd('$HOME/.local/share/ov/pkg/isaac_sim-2023.1.1/setup_python_env.sh', { 'pyright-langserver', '--stdio' })
+	cmd = { '/bin/bash', '-c', 'source $HOME/.local/share/ov/pkg/isaac_sim-2023.1.1/setup_python_env.sh && pyright-langserver --stdio' },
+	settings = {
+        python = {
+            analysis = {
+                --extraPaths = extra_paths
+            }
+        }
+    }
+
       })
       lspconfig.ruff_lsp.setup({
 
-        capabilities = capabilities
+        capabilities = capabilities,
+               
+
       })
        lspconfig.clangd.setup({
 
