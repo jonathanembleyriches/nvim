@@ -1,5 +1,5 @@
 return {
-  "goolord/alpha-nvim",
+  "jonathanembleyriches/EzUnreal",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
   },
